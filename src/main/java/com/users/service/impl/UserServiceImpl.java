@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageResponse getAllUsersByRole(int pageNo, int pageSize, String role){
         String updatedRole = role.toUpperCase();
-        if(!roleRepository.existByRole(updatedRole)){
+        if(!roleRepository.existsByRole(updatedRole)){
             throw new NotFoundException("Role with name ("+role+") not found");
         }
         Set<Roles> roles = new HashSet<>();
