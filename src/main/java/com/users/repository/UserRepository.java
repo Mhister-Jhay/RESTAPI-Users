@@ -14,5 +14,6 @@ import java.util.Set;
 public interface UserRepository extends JpaRepository<Users,Long> {
     boolean existsByUsernameOrEmail(String username, String email);
 
-    Page<Users> findAllByRoles(Set<Roles> roles, Pageable pageable);
+    Page<Users> findAllByRolesContaining(Roles roles, Pageable pageable);
+    Page<Users> findAllByRolesNotContaining(Roles roles, Pageable pageable);
 }

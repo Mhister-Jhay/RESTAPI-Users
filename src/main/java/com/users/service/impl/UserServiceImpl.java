@@ -76,17 +76,15 @@ public class UserServiceImpl implements UserService {
         if(!roleRepository.existsByRole(updatedRole)){
             throw new NotFoundException("Role with name ("+role+") not found");
         }
-        Set<Roles> roles = new HashSet<>();
+        Page<Users> usersPage;
         if(updatedRole.equals("ADMIN")){
             Roles roles1 = Roles.builder().role(updatedRole).build();
-            Roles roles2 = Roles.builder().role("USER").build();
-            roles.add(roles1);
-            roles.add(roles2);
+          usersPage = userRepository.findAllByRolesContaining(roles1,PageRequest.of(pageNo,pageSize));
         }else{
-            Roles roles1 = Roles.builder().role(updatedRole).build();
-            roles.add(roles1);
+            Roles roles1 = Roles.builder().role("ADMIN").build();
+           usersPage = userRepository.findAllByRolesNotContaining(roles1,PageRequest.of(pageNo,pageSize));
         }
-        Page<Users> usersPage = userRepository.findAllByRoles(roles,PageRequest.of(pageNo,pageSize));
+
         List<UserResponse> userResponseList = usersPage.getContent().stream().map(this::mapToUserResponse)
                 .toList();
         return PageResponse.builder()
